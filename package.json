@@ -1,6 +1,6 @@
 {
   "name": "mazey-polestar",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A Demo for Webpack Build",
   "main": "lib/index.js",
   "scripts": {
@@ -18,18 +18,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mazeyqian/webpack-build-demo.git"
+    "url": "git+https://github.com/chengchuu/webpack-build-demo.git"
   },
   "author": {
     "name": "Cheng",
     "email": "mazeyqian@gmail.com",
-    "url": "https://github.com/mazeyqian"
+    "url": "https://github.com/chengchuu"
   },
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/mazeyqian/webpack-build-demo/issues"
+    "url": "https://github.com/chengchuu/webpack-build-demo/issues"
   },
-  "homepage": "https://github.com/mazeyqian/webpack-build-demo#readme",
+  "homepage": "https://github.com/chengchuu/webpack-build-demo#readme",
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
