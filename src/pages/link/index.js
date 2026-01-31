@@ -35,7 +35,8 @@ import {
 // b
 // <a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
 // http://www.example.com/tiny/index.html?msg=<a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
-const TinyCon = genCustomConsole('[Link]', { showDate: true });
+const isDebug = getQueryParam('debug') === '1';
+const TinyCon = genCustomConsole('[Link]', { showDate: true, enabled: isDebug });
 const linkBaseUrl = '//i.mazey.net';
 const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
 const libBaseUrl = '//i.mazey.net/lib';
