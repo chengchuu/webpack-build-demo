@@ -36,7 +36,7 @@ import {
 // <a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
 // http://www.example.com/tiny/index.html?msg=<a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
 const TinyCon = genCustomConsole('TinyCon:', { showDate: true });
-const backupDomain = 'https://s.feperf.com';
+const linkBaseUrl = '//i.mazey.net';
 const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
 const libBaseUrl = '//i.mazey.net/lib';
 const QRCodeFav = 'https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png';
@@ -103,7 +103,7 @@ const Tiny = () => {
     if (baseUrl) {
       Object.assign(params, { base_url: baseUrl });
     }
-    return axios.post(`${backupDomain}/api/gee/generate-short-link`, params)
+    return axios.post(`${linkBaseUrl}/api/gee/generate-short-link`, params)
       .then(res => {
         const link = res.data.tiny_link;
         TinyCon.log('Link', link);
@@ -113,7 +113,10 @@ const Tiny = () => {
 
   const hashCodeToLink = hashCode => {
     if (typeof hashCode === 'string' && hashCode.length <= 4 && isValidENCode(hashCode)) {
-      const link = `${backupDomain}/t/${hashCode.toLowerCase()}`;
+      let link = `${linkBaseUrl}/t/${hashCode.toLowerCase()}`;
+      if (!link.includes('http') && !link.includes('https')) {
+        link = `https:${link}`;
+      }
       TinyCon.log('Link', link);
       loadedLayer && window.layer.confirm(`检测到输入短字符，将跳转至：${link}`, {
         title: '提示',

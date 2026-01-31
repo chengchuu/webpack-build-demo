@@ -6,8 +6,8 @@
   "scripts": {
     "build:index": "cross-env ENTRY=index webpack --config webpack.config.prd.js",
     "build:wordpress": "cross-env ENTRY=wordpress webpack --config webpack.config.prd.js",
-    "serve:tiny": "cross-env ENTRY=tiny webpack-dev-server --config webpack.config.dev.js",
-    "build:tiny": "cross-env ENTRY=tiny webpack --config webpack.config.prd.js",
+    "serve:link": "cross-env ENTRY=link webpack-dev-server --config webpack.config.dev.js",
+    "build:link": "cross-env ENTRY=link webpack --config webpack.config.prd.js",
     "build:cdn": "cross-env ENTRY=cdn webpack --config webpack.config.prd.js",
     "build:obfuscator": "cross-env ENTRY=obfuscator webpack --config webpack.config.prd.js",
     "watch:confluence": "cross-env ENTRY=confluence webpack watch --mode=development --config webpack.config.lib.js",
