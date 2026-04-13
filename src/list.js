@@ -1,14 +1,17 @@
 import { genCustomConsole, addStyle, genStyleString } from "mazey";
 
 const listCon = genCustomConsole("[List]");
+
 const currentYear = new Date().getFullYear();
-const footerStyle = genStyleString(
+const listHideStyle = genStyleString(
   ".footer>.hope-stack>a:first-child" +
   ",div.hope-flex>a[href^='https://doc.oplist.org/faq/howto#']" +
+  ",div.hope-stack>a[href='/@manage/about']" +
+  ",div.hope-stack>a[href='https://doc.oplist.org']" +
   ",.m-hide",
   [ "display: none" ]
 );
-const footerDivContent = genStyleString(
+const footerDivStyle = genStyleString(
   ".footer>.hope-stack:before",
   [
     `content: 'Copyright © ${currentYear} List'`,
@@ -19,9 +22,7 @@ const footerDivContent = genStyleString(
     "padding-bottom: var(--hope-space-1)",
   ]
 );
-
-addStyle(footerStyle, { id: "polestar-list-footer" });
-addStyle(footerDivContent, { id: "polestar-list-footer-div-content" });
+addStyle(listHideStyle + footerDivStyle, { id: "polestar-list" });
 
 let hideGuestBtnIndex = 0;
 const hideGuestBtn = () => {
