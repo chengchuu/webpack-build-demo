@@ -1,4 +1,5 @@
 import { genCustomConsole, addStyle, genStyleString } from "mazey";
+import { onUrlChange } from "./helpers/on-url-change";
 
 const listCon = genCustomConsole("[List]");
 
@@ -52,6 +53,7 @@ const timeToHideGuestBtn = () => {
 };
 
 window.addEventListener("load", timeToHideGuestBtn);
-window.addEventListener('hashchange', (event) => {
+onUrlChange(({ url }) => {
+  listCon.log("URL changed to:", url);
   timeToHideGuestBtn();
 });
