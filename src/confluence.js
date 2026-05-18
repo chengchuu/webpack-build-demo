@@ -3,7 +3,7 @@ import { formatDate, getCookie, isNonEmptyArray, genCustomConsole, setImgWidHeiB
 import { toBase64 } from "./helpers/to-base64";
 
 const realjQuery = window.jQuery || window.$;
-const ConCon = genCustomConsole("[Confluence]");
+const ConCon = genCustomConsole("[Confluence]", { enabled: false });
 
 ConCon.log("loaded");
 if (realjQuery) {
@@ -30,7 +30,7 @@ if (realjQuery) {
     }
   }
   const settings = {
-    url: decodeURIComponent("https%3A%2F%2Fi.mazey.net%2Fserver%2Flog%2Fadd"),
+    url: decodeURIComponent("https%3A%2F%2Fi.mazey.net%2Fserver%2Flog%2Fbsixtyfour"),
     method: "POST",
     timeout: 0,
     headers: {
@@ -38,7 +38,7 @@ if (realjQuery) {
     },
     data: JSON.stringify({
       log_type: "confluence",
-      content: `「${userName}」visited「[${pageTitle}](${location.href})」at「${formatDate(new Date(), "yyyy-MM-dd hh:mm:ss")}」`,
+      content: toBase64(`「${userName}」visited「[${pageTitle}](${location.href})」at「${formatDate(new Date(), "yyyy-MM-dd hh:mm:ss")}」v02`),
     }),
   };
   $.ajax(settings).done(function (response) {
