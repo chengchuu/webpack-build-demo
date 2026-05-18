@@ -15,7 +15,7 @@
     "watch:confluence": "cross-env ENTRY=confluence webpack watch --mode=development --config webpack.config.lib.js",
     "build:confluence": "cross-env ENTRY=confluence webpack --mode=production --config webpack.config.lib.js",
     "build:list": "cross-env ENTRY=list webpack --mode=production --config webpack.config.lib.js",
-    "lint-and-fix": "eslint ./src/**/*.js --ext 'js' --fix",
+    "lint:fix": "eslint ./src/**/*.js --ext 'js' --fix",
     "build": "echo 'Nothing to build!' && exit 0",
     "test": "echo 'Ready to write and run tests?' && exit 0"
   },

@@ -6,7 +6,7 @@
  * @param {{ fireOnInit?: boolean }} options
  * @returns {() => void} unsubscribe function
  */
-export function onUrlChange(callback, options = {}) {
+export function onUrlChange (callback, options = {}) {
   const { fireOnInit = true } = options;
 
   let currentUrl = location.href;

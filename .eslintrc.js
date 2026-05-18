@@ -26,7 +26,7 @@ module.exports = {
     // allow async-await
     'generator-star-spacing': 'off', // 关闭
     semi: ['error', 'always'], // 使用分号
-    quotes: ['error', 'single'], // 使用单引号
+    quotes: ['error', 'double'], // 使用单引号
     // 'no-unused-vars': ['warn', 'always'], // 未使用变量
     // 最大长度 120
     'max-len': [

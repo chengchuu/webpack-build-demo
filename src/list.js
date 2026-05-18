@@ -10,7 +10,7 @@ const listHideStyle = genStyleString(
   ",div.hope-stack>a[href='/@manage/about']" +
   ",div.hope-stack>a[href='https://doc.oplist.org']" +
   ",.m-hide",
-  [ "display: none" ]
+  ["display: none"],
 );
 const footerDivStyle = genStyleString(
   ".footer>.hope-stack:before",
@@ -21,7 +21,7 @@ const footerDivStyle = genStyleString(
     "padding-inline-end: var(--hope-space-1_5)",
     "padding-top: var(--hope-space-1)",
     "padding-bottom: var(--hope-space-1)",
-  ]
+  ],
 );
 addStyle(listHideStyle + footerDivStyle, { id: "polestar-list" });
 
@@ -33,10 +33,10 @@ const hideGuestBtn = () => {
     document,
     null,
     XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
+    null,
   ).singleNodeValue;
   if (browseGuestBtn && browseGuestBtn.style) {
-    browseGuestBtn.style.display = 'none';
+    browseGuestBtn.style.display = "none";
     if (hideGuestBtnIndex) clearInterval(hideGuestBtnIndex);
   }
 };

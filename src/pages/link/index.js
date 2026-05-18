@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
-import React, { Component, useState, useEffect, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
-import axios from 'axios';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import QRCodeStyling from 'qr-code-styling';
-import './normalize.scss';
-import './tiny.scss';
+import React, { Component, useState, useEffect, useRef } from "react";
+import { createRoot } from "react-dom/client";
+import axios from "axios";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import QRCodeStyling from "qr-code-styling";
+import "./normalize.scss";
+import "./tiny.scss";
 import {
   addStyle,
   genCustomConsole,
@@ -21,7 +21,7 @@ import {
   deepCopy,
   getBrowserInfo,
   convertCamelToUnder,
-} from 'mazey';
+} from "mazey";
 
 // Test Examples:
 // http://localhost:9202/tiny.html
@@ -35,28 +35,28 @@ import {
 // b
 // <a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
 // http://www.example.com/tiny/index.html?msg=<a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
-const isDebug = getQueryParam('debug') === '1';
-const TinyCon = genCustomConsole('[Link]', { showDate: true, enabled: isDebug });
-const linkBaseUrl = '//i.mazey.net';
+const isDebug = getQueryParam("debug") === "1";
+const TinyCon = genCustomConsole("[Link]", { showDate: true, enabled: isDebug });
+const linkBaseUrl = "//i.mazey.net";
 const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
-const libBaseUrl = '//i.mazey.net/lib';
-const QRCodeFav = 'https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png';
-const defaultTinyTitle = '备用链接';
+const libBaseUrl = "//i.mazey.net/lib";
+const QRCodeFav = "https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png";
+const defaultTinyTitle = "备用链接";
 const Tiny = () => {
-  const [ori_link, setOriLink] = useState('');
-  const [tiny_link, setTinyLink] = useState('');
-  const [queryMsg, setQueryMsg] = useState('');
+  const [ori_link, setOriLink] = useState("");
+  const [tiny_link, setTinyLink] = useState("");
+  const [queryMsg, setQueryMsg] = useState("");
   const [copied, setCopied] = useState(false);
   const [showQRCode, setShowQRCode] = useState(false);
   const [loadedLayer, setLoadedLayer] = useState(false);
   const [backupTinyLinks, setBackupTinyLinks] = useState([]);
   const ref = useRef(null);
   // Variates
-  let msgLink = '';
+  let msgLink = "";
 
   useEffect(() => {
-    TinyCon.log('Start');
-    localStorage.setItem('mazey_loaded_tiny', '1');
+    TinyCon.log("Start");
+    localStorage.setItem("mazey_loaded_tiny", "1");
     // Load
     (async () => {
       if (!(window.$ || window.jQuery)) {
@@ -66,11 +66,11 @@ const Tiny = () => {
         .then(() => {
           setLoadedLayer(true);
         });
-      const tempQueryMsg = getQueryParam('msg');
+      const tempQueryMsg = getQueryParam("msg");
       if (tempQueryMsg) {
         setTinyLink(tempQueryMsg);
         setQueryMsg(tempQueryMsg);
-        msg('消息接收成功');
+        msg("消息接收成功");
       }
     })();
   }, []);
@@ -78,10 +78,10 @@ const Tiny = () => {
   const msg = (content, tryAgain = true) => {
     if (loadedLayer) {
       window.layer.msg(content, { time: 2 * 1000 });
-    } else if (window.layer && typeof window.layer === 'object') {
+    } else if (window.layer && typeof window.layer === "object") {
       window.layer.msg(content, { time: 2 * 1000 });
     } else if (tryAgain === true) {
-      TinyCon.log('Try Again', tryAgain);
+      TinyCon.log("Try Again", tryAgain);
       setTimeout(() => {
         msg(content, false);
       }, 1000);
@@ -97,8 +97,8 @@ const Tiny = () => {
     const params = {
       ori_link: oriLink,
     };
-    const oneTime = getQueryParamUltimate('oneTime');
-    if (oneTime === '1') {
+    const oneTime = getQueryParamUltimate("oneTime");
+    if (oneTime === "1") {
       Object.assign(params, { one_time: true });
     }
     if (baseUrl) {
@@ -107,25 +107,25 @@ const Tiny = () => {
     return axios.post(`${linkBaseUrl}/api/gee/generate-short-link`, params)
       .then(res => {
         const link = res.data.tiny_link;
-        TinyCon.log('Link', link);
+        TinyCon.log("Link", link);
         return link;
       });
   };
 
   const hashCodeToLink = hashCode => {
-    if (typeof hashCode === 'string' && hashCode.length <= 4 && isValidENCode(hashCode)) {
+    if (typeof hashCode === "string" && hashCode.length <= 4 && isValidENCode(hashCode)) {
       let link = `${linkBaseUrl}/t/${hashCode.toLowerCase()}`;
-      if (!link.includes('http') && !link.includes('https')) {
+      if (!link.includes("http") && !link.includes("https")) {
         link = `https:${link}`;
       }
-      TinyCon.log('Link', link);
+      TinyCon.log("Link", link);
       loadedLayer && window.layer.confirm(`检测到输入短字符，将跳转至：${link}`, {
-        title: '提示',
-        btn: ['确认', '取消'],
+        title: "提示",
+        btn: ["确认", "取消"],
       }, function () {
         window.open(link);
       }, function () {
-        msg('已取消');
+        msg("已取消");
       });
       return true;
     }
@@ -139,28 +139,28 @@ const Tiny = () => {
       fail = reject;
     });
     if (!isValidAnyUrl(link)) {
-      TinyCon.log('convertToMsg Link', link);
+      TinyCon.log("convertToMsg Link", link);
       let linkForMsg = link;
       let isTag = false;
       if (isHtmlTag(linkForMsg)) {
-        linkForMsg = linkForMsg.replace(/<[^>]+>/g, '');
+        linkForMsg = linkForMsg.replace(/<[^>]+>/g, "");
         isTag = true;
       }
-      loadedLayer && window.layer.confirm(`检测到输入${isTag ? '标签' : '文字'}，将通过短链传递：${linkForMsg}`, {
-        title: '提示',
-        btn: ['确认', '取消'],
+      loadedLayer && window.layer.confirm(`检测到输入${isTag ? "标签" : "文字"}，将通过短链传递：${linkForMsg}`, {
+        title: "提示",
+        btn: ["确认", "取消"],
       }, function () {
-        TinyCon.log('linkForMsg', linkForMsg);
+        TinyCon.log("linkForMsg", linkForMsg);
         const enMsg = encodeURIComponent(linkForMsg);
-        retLink = updateQueryParam(location.href, 'msg', enMsg);
-        TinyCon.log('retLink', retLink);
+        retLink = updateQueryParam(location.href, "msg", enMsg);
+        TinyCon.log("retLink", retLink);
         ok(retLink);
       }, function () {
-        msg('已取消');
-        ok('cancel');
+        msg("已取消");
+        ok("cancel");
       });
     } else {
-      ok('valid');
+      ok("valid");
     }
     return status;
   };
@@ -168,13 +168,13 @@ const Tiny = () => {
   const checkMsg = async (link) => {
     let ret = false;
     const tempMsgLinkRet = await convertToMsg(link);
-    TinyCon.log('tempMsgLinkRet', tempMsgLinkRet);
-    if (tempMsgLinkRet === 'cancel') {
+    TinyCon.log("tempMsgLinkRet", tempMsgLinkRet);
+    if (tempMsgLinkRet === "cancel") {
       ret = false;
-    } else if (typeof tempMsgLinkRet === 'string' && isValidAnyUrl(tempMsgLinkRet)) {
+    } else if (typeof tempMsgLinkRet === "string" && isValidAnyUrl(tempMsgLinkRet)) {
       msgLink = tempMsgLinkRet;
       ret = true;
-    } else if (typeof tempMsgLinkRet === 'string' && tempMsgLinkRet.includes('localhost:9202')) {
+    } else if (typeof tempMsgLinkRet === "string" && tempMsgLinkRet.includes("localhost:9202")) {
       // Debug
       msgLink = tempMsgLinkRet;
       ret = true;
@@ -183,12 +183,12 @@ const Tiny = () => {
   };
 
   const fetchShortLink = async () => {
-    let real_ori_link = '';
+    let real_ori_link = "";
     TinyCon.log(`Ori Link ${ori_link}`);
     const trimOriLink = mTrim(ori_link);
     const suppleHttp = `http://${trimOriLink}`;
-    if (trimOriLink === '') {
-      msg('不能为空');
+    if (trimOriLink === "") {
+      msg("不能为空");
       return;
     } else if (isValidAnyUrl(trimOriLink)) {
       real_ori_link = trimOriLink;
@@ -200,32 +200,32 @@ const Tiny = () => {
       real_ori_link = msgLink;
     } else {
       // Quickly Visit
-      msg('请输入正确的链接');
+      msg("请输入正确的链接");
       return;
     }
     setOriLink(real_ori_link);
     setBackupTinyLinks([]);
     setShowQRCode(false);
-    if (typeof real_ori_link === 'string' && real_ori_link.includes(' ')) {
-      TinyCon.log('ori_link Before Trim', real_ori_link);
+    if (typeof real_ori_link === "string" && real_ori_link.includes(" ")) {
+      TinyCon.log("ori_link Before Trim", real_ori_link);
       real_ori_link = mTrim(real_ori_link);
     }
     loadedLayer && window.layer.load(1);
-    TinyCon.log('Ultimate', real_ori_link);
+    TinyCon.log("Ultimate", real_ori_link);
     const tinyLink = await getTinyLink(real_ori_link).then(link => {
-      loadedLayer && window.layer.closeAll('loading');
+      loadedLayer && window.layer.closeAll("loading");
       const tiny_link = link;
       setTinyLink(tiny_link);
       setCopied(false);
-      msg('成功');
+      msg("成功");
       return tiny_link;
     }).catch(err => {
-      loadedLayer && window.layer.closeAll('loading');
-      msg('网络错误');
+      loadedLayer && window.layer.closeAll("loading");
+      msg("网络错误");
       TinyCon.error(err.message);
     });
     // QRCode
-    if (typeof tinyLink === 'string' && tinyLink.includes('http')) {
+    if (typeof tinyLink === "string" && tinyLink.includes("http")) {
       setShowQRCode(true);
       setTimeout(() => {
         convertUrlStringToQRCode(tinyLink);
@@ -239,12 +239,12 @@ const Tiny = () => {
           bakLinks.push({
             title: defaultTinyTitle,
             link,
-            area: '全球',
+            area: "全球",
             copied: false,
           });
           // setBackupTinyLinks([...bakLinks]);
           setBackupTinyLinks(deepCopy(bakLinks));
-          TinyCon.log('backupTinyLinks', backupTinyLinks);
+          TinyCon.log("backupTinyLinks", backupTinyLinks);
         }
       });
     }
@@ -256,7 +256,7 @@ const Tiny = () => {
 
   const handleKeyDown = ({ key }) => {
     // https://www.w3.org/TR/uievents-key/#keys-whitespace
-    if (key === 'Enter') {
+    if (key === "Enter") {
       fetchShortLink();
     }
   };
@@ -286,25 +286,25 @@ const Tiny = () => {
   };
 
   const convertUrlStringToQRCode = url => {
-    TinyCon.log('convertUrlStringToQRCode', url);
+    TinyCon.log("convertUrlStringToQRCode", url);
     const qrCodeParams = {
       width: 200,
       height: 200,
       data: url,
       dotsOptions: {
-        color: '#111111',
-        type: 'square',
+        color: "#111111",
+        type: "square",
       },
       backgroundOptions: {
-        color: '#ffffff',
+        color: "#ffffff",
       },
     };
     const { system } = getBrowserInfo();
-    if (system !== 'ios') {
+    if (system !== "ios") {
       Object.assign(qrCodeParams, {
         image: QRCodeFav,
         imageOptions: {
-          crossOrigin: 'anonymous',
+          crossOrigin: "anonymous",
           margin: 0,
         },
       });
@@ -319,7 +319,7 @@ const Tiny = () => {
         <input value={ori_link}
           onChange={inputChange}
           onKeyDown={handleKeyDown}
-          placeholder={queryMsg ? '消息接收成功，复制下面的文字，或者在此输入长链接或短文字' : '请输入长链接'}
+          placeholder={queryMsg ? "消息接收成功，复制下面的文字，或者在此输入长链接或短文字" : "请输入长链接"}
           autoFocus={!queryMsg}
         />
         <button type='button' onClick={fetchShortLink}>生成</button>
@@ -335,14 +335,14 @@ const Tiny = () => {
             ? <CopyToClipboard onCopy={() => setCopied(true)} text={tiny_link}>
               <button>复制</button>
             </CopyToClipboard>
-            : ''
+            : ""
         }
         {/* 提示 */}
         {
-          copied ? <span className='copied'>已复制</span> : ''
+          copied ? <span className='copied'>已复制</span> : ""
         }
         {
-          !tiny_link ? <span className='placeholder'>生成的短链接~</span> : ''
+          !tiny_link ? <span className='placeholder'>生成的短链接~</span> : ""
         }
       </div>
       {
@@ -354,7 +354,7 @@ const Tiny = () => {
               <button>复制</button>
             </CopyToClipboard>
             {
-              tiny.copied ? <span className='copied'>已复制</span> : ''
+              tiny.copied ? <span className='copied'>已复制</span> : ""
             }
           </div>
         ))
@@ -364,14 +364,14 @@ const Tiny = () => {
           ? <div className='generated-result is-qr'>
             <div className='qr-code' id='qr-code' ref={ref}></div>
           </div>
-          : ''
+          : ""
       }
     </div>
   );
 };
 
 // Example: TinyInit('#tiny-box', { isGrayBackground: true });
-const TinyInit = (selector = '', options = {
+const TinyInit = (selector = "", options = {
   isGrayBackground: false,
 }) => {
   if (!selector) {
@@ -383,15 +383,15 @@ const TinyInit = (selector = '', options = {
     const root = createRoot(container);
     root.render(<Tiny />);
     if (isGrayBackground) {
-      const styleStr = genStyleString('#tiny-box', [
-        'background-color: #eee',
-        'border-radius: 4px',
+      const styleStr = genStyleString("#tiny-box", [
+        "background-color: #eee",
+        "border-radius: 4px",
       ]);
       addStyle(styleStr);
     }
   }
 };
 
-TinyInit('#tiny-box', { isGrayBackground: true });
+TinyInit("#tiny-box", { isGrayBackground: true });
 
 window.TINY_INIT = TinyInit;
