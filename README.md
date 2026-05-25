@@ -2,12 +2,6 @@
 
 Not just a demo.
 
-## Deploy
-
-```bash
-git clone https://github.com/chengchuu/webpack-build-demo.git polestar
-```
-
 ## Contributing
 
 ### Development Environment
