@@ -5,21 +5,10 @@ import { createRoot } from "react-dom/client";
 import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCodeStyling from "qr-code-styling";
-// import "./normalize.scss";
-// import "./tiny.scss";
 import {
-  addStyle,
-  genCustomConsole,
-  getQueryParam,
-  loadScript,
-  mTrim,
-  updateQueryParam,
-  genHashCode,
-  isValidUrl,
-  isValidHttpUrl,
-  genStyleString,
-  deepCopy,
-  getBrowserInfo,
+  addStyle, genCustomConsole, getQueryParam, loadScript,
+  mTrim, updateQueryParam, genHashCode, isValidUrl,
+  isValidHttpUrl, genStyleString, deepCopy, getBrowserInfo,
   convertCamelToUnder,
 } from "mazey";
 
@@ -51,7 +40,6 @@ const Tiny = () => {
   const [loadedLayer, setLoadedLayer] = useState(false);
   const [backupTinyLinks, setBackupTinyLinks] = useState([]);
   const ref = useRef(null);
-  // Variates
   let msgLink = "";
 
   useEffect(() => {
@@ -199,7 +187,6 @@ const Tiny = () => {
     } else if (await checkMsg(trimOriLink)) {
       real_ori_link = msgLink;
     } else {
-      // Quickly Visit
       msg("请输入正确的链接");
       return;
     }
@@ -242,7 +229,6 @@ const Tiny = () => {
             area: "全球",
             copied: false,
           });
-          // setBackupTinyLinks([...bakLinks]);
           setBackupTinyLinks(deepCopy(bakLinks));
           TinyCon.log("backupTinyLinks", backupTinyLinks);
         }
@@ -255,7 +241,6 @@ const Tiny = () => {
   };
 
   const handleKeyDown = ({ key }) => {
-    // https://www.w3.org/TR/uievents-key/#keys-whitespace
     if (key === "Enter") {
       fetchShortLink();
     }
@@ -325,11 +310,11 @@ const Tiny = () => {
         <button type='button' onClick={fetchShortLink}>生成</button>
       </div>
       <div className='result-show'>
-        {/* 短链接 */}
+        {/* Short Link */}
         {
           tiny_link && <input value={tiny_link} placeholder='请复制短链接' onChange={() => {}} autoFocus={!!queryMsg} />
         }
-        {/* 复制按钮 */}
+        {/* Copy Button */}
         {
           tiny_link
             ? <CopyToClipboard onCopy={() => setCopied(true)} text={tiny_link}>
@@ -337,7 +322,7 @@ const Tiny = () => {
             </CopyToClipboard>
             : ""
         }
-        {/* 提示 */}
+        {/* Hint */}
         {
           copied ? <span className='copied'>已复制</span> : ""
         }
