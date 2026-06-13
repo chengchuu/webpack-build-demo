@@ -5,8 +5,8 @@ import { createRoot } from "react-dom/client";
 import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCodeStyling from "qr-code-styling";
-import "./normalize.scss";
-import "./tiny.scss";
+// import "./normalize.scss";
+// import "./tiny.scss";
 import {
   addStyle,
   genCustomConsole,
