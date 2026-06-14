@@ -68,6 +68,7 @@
     "mazey-wordpress-utils": "^1.3.1",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "^19.2.7",
+    "react-redux": "^9.3.0",
     "react-copy-to-clipboard": "^5.1.1",
     "react-dom": "^19.2.7",
     "sha1": "^1.1.1"
