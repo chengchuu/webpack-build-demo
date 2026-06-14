@@ -19,6 +19,12 @@ This directory defines the standalone "link" page for generating short links, ba
   - Defines `TinyInit(selector, options)` for mounting `Tiny` into any matching DOM node.
   - Immediately calls `TinyInit("#tiny-box", { isGrayBackground: true })`.
   - Exposes `window.TINY_INIT = TinyInit` for external consumers.
+- `store.js`
+  - Creates a page-local Redux Toolkit store.
+  - `TinyInit` creates a fresh store per mounted root and passes it through `react-redux`'s `Provider`.
+- `linkSlice.js`
+  - Defines the `link` Redux slice for page data.
+  - Owns original link input, generated short link, query message, copy state, QR visibility, Layer loaded state, and backup short links.
 - `index.html`
   - Supplies the mount target and page-local global config.
   - `window.TINY_FOREIGN_BASE_URL` enables optional backup short-link generation.
@@ -36,10 +42,10 @@ This directory defines the standalone "link" page for generating short links, ba
 
 1. `index.html` loads the generated bundle and exposes runtime config on `window`.
 2. `index.js` calls `TinyInit("#tiny-box", { isGrayBackground: true })`.
-3. `TinyInit` finds the DOM node, creates a React root with `createRoot`, renders `<Tiny />`, and optionally injects gray background styles through `mazey`'s `addStyle`.
-4. `Tiny` initializes local React state:
-   - `ori_link`: user input / normalized original URL.
-   - `tiny_link`: primary generated short link or query message.
+3. `TinyInit` finds the DOM node, creates a React root with `createRoot`, creates a page-local Redux store, renders `<Provider store={store}><Tiny /></Provider>`, and optionally injects gray background styles through `mazey`'s `addStyle`.
+4. `Tiny` reads page data from `linkSlice` through `useSelector(selectLinkState)`:
+   - `oriLink`: user input / normalized original URL.
+   - `tinyLink`: primary generated short link or query message.
    - `queryMsg`: decoded `msg` query parameter state.
    - `copied`: copy status for the primary result.
    - `showQRCode`: controls QR code rendering.
@@ -76,5 +82,5 @@ This directory defines the standalone "link" page for generating short links, ba
   - `react`: `19.2.7`
   - `@reduxjs/toolkit`: `2.12.0`
 - Upgrade `react` and `react-dom` together to matching versions.
-- Redux Toolkit is not currently installed or used in this page. Introducing it here would require creating a store/provider boundary and deciding which local `Tiny` state should become app state. Most current state is component-local and may not need Redux unless it will be shared across pages or embedded consumers.
+- Redux Toolkit and React Redux are used locally by this page. Keep `store.js` and `linkSlice.js` scoped to this directory unless the state needs to be shared across entries.
 - If React 19 is adopted, test this page around `createRoot`, clipboard behavior, remote script loading, and QR-code rendering.
