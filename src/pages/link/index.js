@@ -11,6 +11,9 @@ import {
   isValidHttpUrl, genStyleString, deepCopy, getBrowserInfo,
   convertCamelToUnder,
 } from "mazey";
+import {
+  getQueryParamUltimate, isHtmlTag, isValidAnyUrl, isValidENCode,
+} from "./utils";
 
 // Test Examples:
 // http://localhost:9202/tiny.html
@@ -74,11 +77,6 @@ const Tiny = () => {
         msg(content, false);
       }, 1000);
     }
-  };
-
-  const getQueryParamUltimate = param => {
-    const underParam = convertCamelToUnder(param);
-    return getQueryParam(param) || getQueryParam(underParam);
   };
 
   const getTinyLink = (oriLink, baseUrl) => {
@@ -244,18 +242,6 @@ const Tiny = () => {
     if (key === "Enter") {
       fetchShortLink();
     }
-  };
-
-  const isHtmlTag = str => {
-    return /<([a-z]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/g.test(str);
-  };
-
-  const isValidAnyUrl = url => {
-    return isValidUrl(url);
-  };
-
-  const isValidENCode = str => {
-    return /^[a-zA-Z]+$/g.test(str);
   };
 
   const copyOneOfBackupTinys = (index) => {
