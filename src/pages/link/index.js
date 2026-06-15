@@ -257,6 +257,10 @@ const Tiny = () => {
 
   const convertUrlStringToQRCode = url => {
     TinyCon.log("convertUrlStringToQRCode", url);
+    if (!ref.current) {
+      return;
+    }
+    ref.current.replaceChildren();
     const qrCodeParams = {
       width: 200,
       height: 200,
