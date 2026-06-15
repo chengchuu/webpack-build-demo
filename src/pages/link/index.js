@@ -18,7 +18,7 @@ import {
 import createLinkStore from "./store";
 import { linkActions, selectLinkState } from "./linkSlice";
 
-const isDebug = getQueryParam("debug") === "1";
+const isDebug = getQueryParam("debug") === "on";
 const TinyCon = genCustomConsole("[Link]", { showDate: true, enabled: isDebug });
 const linkBaseUrl = "//i.mazey.net";
 const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
@@ -227,8 +227,8 @@ const Tiny = () => {
     }
   };
 
-  const inputChange = ({ target: { value: ori_link } }) => {
-    dispatch(linkActions.setOriLink(ori_link));
+  const inputChange = ({ target: { value: inputOriLink } }) => {
+    dispatch(linkActions.setOriLink(inputOriLink));
   };
 
   const handleKeyDown = ({ key }) => {
