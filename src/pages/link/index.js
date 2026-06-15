@@ -192,11 +192,11 @@ const Tiny = () => {
     TinyCon.log("Ultimate", realOriLink);
     const tinyLink = await getTinyLink(realOriLink).then(link => {
       loadedLayer && window.layer.closeAll("loading");
-      const tiny_link = link;
-      dispatch(linkActions.setTinyLink(tiny_link));
+      const getTinyLink = link;
+      dispatch(linkActions.setTinyLink(getTinyLink));
       dispatch(linkActions.setCopied(false));
       msg("成功");
-      return tiny_link;
+      return getTinyLink;
     }).catch(err => {
       loadedLayer && window.layer.closeAll("loading");
       msg("网络错误");
