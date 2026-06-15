@@ -162,7 +162,7 @@ const Tiny = () => {
   };
 
   const fetchShortLink = async () => {
-    let real_ori_link = "";
+    let realOriLink = "";
     TinyCon.log(`Ori Link ${ori_link}`);
     const trimOriLink = mTrim(ori_link);
     const suppleHttp = `http://${trimOriLink}`;
@@ -170,27 +170,27 @@ const Tiny = () => {
       msg("不能为空");
       return;
     } else if (isValidAnyUrl(trimOriLink)) {
-      real_ori_link = trimOriLink;
+      realOriLink = trimOriLink;
     } else if (hashCodeToLink(trimOriLink)) {
       return;
     } else if (isValidHttpUrl(suppleHttp)) {
-      real_ori_link = suppleHttp;
+      realOriLink = suppleHttp;
     } else if (await checkMsg(trimOriLink)) {
-      real_ori_link = msgLink;
+      realOriLink = msgLink;
     } else {
       msg("请输入正确的链接");
       return;
     }
-    dispatch(linkActions.setOriLink(real_ori_link));
+    dispatch(linkActions.setOriLink(realOriLink));
     dispatch(linkActions.setBackupTinyLinks([]));
     dispatch(linkActions.setShowQRCode(false));
-    if (typeof real_ori_link === "string" && real_ori_link.includes(" ")) {
-      TinyCon.log("ori_link Before Trim", real_ori_link);
-      real_ori_link = mTrim(real_ori_link);
+    if (typeof realOriLink === "string" && realOriLink.includes(" ")) {
+      TinyCon.log("ori_link Before Trim", realOriLink);
+      realOriLink = mTrim(realOriLink);
     }
     loadedLayer && window.layer.load(1);
-    TinyCon.log("Ultimate", real_ori_link);
-    const tinyLink = await getTinyLink(real_ori_link).then(link => {
+    TinyCon.log("Ultimate", realOriLink);
+    const tinyLink = await getTinyLink(realOriLink).then(link => {
       loadedLayer && window.layer.closeAll("loading");
       const tiny_link = link;
       dispatch(linkActions.setTinyLink(tiny_link));
@@ -212,7 +212,7 @@ const Tiny = () => {
     // Backup
     const bakLinks = [];
     if (foreignBaseUrl) {
-      getTinyLink(real_ori_link, foreignBaseUrl).then(link => {
+      getTinyLink(realOriLink, foreignBaseUrl).then(link => {
         if (isValidHttpUrl(link)) {
           bakLinks.push({
             title: defaultTinyTitle,
