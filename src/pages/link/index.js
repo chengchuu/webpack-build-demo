@@ -1,15 +1,16 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable camelcase */
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
+// eslint-disable-next-line no-unused-vars
 import { Provider, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+// eslint-disable-next-line no-unused-vars
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCodeStyling from "qr-code-styling";
 import {
   addStyle, genCustomConsole, getQueryParam, loadScript,
-  mTrim, updateQueryParam, genHashCode,
-  isValidHttpUrl, genStyleString, getBrowserInfo,
+  mTrim, updateQueryParam, genHashCode, isValidHttpUrl,
+  genStyleString, getBrowserInfo,
 } from "mazey";
 import {
   getQueryParamUltimate, isHtmlTag, isValidAnyUrl, isValidENCode,
@@ -17,18 +18,6 @@ import {
 import createLinkStore from "./store";
 import { linkActions, selectLinkState } from "./linkSlice";
 
-// Test Examples:
-// http://localhost:9202/tiny.html
-// https://www.example.com/tiny
-//  https://www.example.com/tiny
-// www.example.com/tiny
-// ftp://main/sub?id=2333
-// sheeee://hahah/sub?id=num
-// 短消息
-// AAa
-// b
-// <a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
-// http://www.example.com/tiny/index.html?msg=<a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
 const isDebug = getQueryParam("debug") === "1";
 const TinyCon = genCustomConsole("[Link]", { showDate: true, enabled: isDebug });
 const linkBaseUrl = "//i.mazey.net";
@@ -36,15 +25,13 @@ const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
 const libBaseUrl = "//i.mazey.net/lib";
 const QRCodeFav = "https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png";
 const defaultTinyTitle = "备用链接";
+// eslint-disable-next-line no-unused-vars
 const Tiny = () => {
   const dispatch = useDispatch();
   const {
     oriLink: ori_link,
     tinyLink: tiny_link,
-    queryMsg,
-    copied,
-    showQRCode,
-    loadedLayer,
+    queryMsg, copied, showQRCode, loadedLayer,
     backupTinyLinks,
   } = useSelector(selectLinkState);
   const ref = useRef(null);
@@ -124,6 +111,7 @@ const Tiny = () => {
   };
 
   const convertToMsg = link => {
+    // eslint-disable-next-line no-unused-vars
     let ok, fail, retLink;
     const status = new Promise((resolve, reject) => {
       ok = resolve;
