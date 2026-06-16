@@ -23,6 +23,11 @@
     "type": "git",
     "url": "git+https://github.com/chengchuu/webpack-build-demo.git"
   },
+  "keywords": [
+    "function",
+    "document",
+    "test"
+  ],
   "author": {
     "name": "Cheng",
     "email": "mazeyqian@gmail.com",
