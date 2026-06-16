@@ -30,7 +30,7 @@ const Tiny = () => {
   const dispatch = useDispatch();
   const {
     oriLink: stateOriLink,
-    tinyLink: tiny_link,
+    tinyLink: stateTinyLink,
     queryMsg, copied, showQRCode, loadedLayer,
     backupTinyLinks,
   } = useSelector(selectLinkState);
@@ -289,12 +289,12 @@ const Tiny = () => {
       <div className='result-show'>
         {/* Short Link */}
         {
-          tiny_link && <input value={tiny_link} placeholder='请复制短链接' onChange={() => {}} autoFocus={!!queryMsg} />
+          stateTinyLink && <input value={stateTinyLink} placeholder='请复制短链接' onChange={() => {}} autoFocus={!!queryMsg} />
         }
         {/* Copy Button */}
         {
-          tiny_link
-            ? <CopyToClipboard onCopy={() => dispatch(linkActions.setCopied(true))} text={tiny_link}>
+          stateTinyLink
+            ? <CopyToClipboard onCopy={() => dispatch(linkActions.setCopied(true))} text={stateTinyLink}>
               <button>复制</button>
             </CopyToClipboard>
             : ""
@@ -304,7 +304,7 @@ const Tiny = () => {
           copied ? <span className='copied'>已复制</span> : ""
         }
         {
-          !tiny_link ? <span className='placeholder'>生成的短链接~</span> : ""
+          !stateTinyLink ? <span className='placeholder'>生成的短链接~</span> : ""
         }
       </div>
       {
