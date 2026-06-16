@@ -1,6 +1,6 @@
-import sha1 from 'sha1';
+import sha1 from "sha1";
 
-const params = 'key=secret&value=obfuscator';
+const params = "key=secret&value=obfuscator";
 const sign = sha1(params);
 
 console.log(`params: ${params}`);
