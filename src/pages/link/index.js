@@ -216,7 +216,7 @@ const Tiny = () => {
             copied: false,
           });
           dispatch(linkActions.setBackupTinyLinks([...bakLinks]));
-          TinyCon.log("backupTinyLinks", backupTinyLinks);
+          TinyCon.log("backupTinyLinks (next)", bakLinks);
         }
       });
     }
