@@ -4,7 +4,7 @@
 [![license][l-image]][l-url]
 
 [npm-image]: https://img.shields.io/npm/v/mazey-polestar
-[npm-url]: https://npmjs.org/package/mazey-polestar
+[npm-url]: https://www.npmjs.com/package/mazey-polestar
 [l-image]: https://img.shields.io/npm/l/mazey-polestar
 [l-url]: https://github.com/chengchuu/webpack-build-demo/blob/main/LICENSE
 
