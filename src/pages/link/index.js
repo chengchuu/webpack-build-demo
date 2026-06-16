@@ -29,7 +29,7 @@ const defaultTinyTitle = "备用链接";
 const Tiny = () => {
   const dispatch = useDispatch();
   const {
-    oriLink: ori_link,
+    oriLink: stateOriLink,
     tinyLink: tiny_link,
     queryMsg, copied, showQRCode, loadedLayer,
     backupTinyLinks,
@@ -163,8 +163,8 @@ const Tiny = () => {
 
   const fetchShortLink = async () => {
     let realOriLink = "";
-    TinyCon.log(`Ori Link ${ori_link}`);
-    const trimOriLink = mTrim(ori_link);
+    TinyCon.log(`Ori Link ${stateOriLink}`);
+    const trimOriLink = mTrim(stateOriLink);
     const suppleHttp = `http://${trimOriLink}`;
     if (trimOriLink === "") {
       msg("不能为空");
@@ -185,7 +185,7 @@ const Tiny = () => {
     dispatch(linkActions.setBackupTinyLinks([]));
     dispatch(linkActions.setShowQRCode(false));
     if (typeof realOriLink === "string" && realOriLink.includes(" ")) {
-      TinyCon.log("ori_link Before Trim", realOriLink);
+      TinyCon.log("Link Before Trim", realOriLink);
       realOriLink = mTrim(realOriLink);
     }
     loadedLayer && window.layer.load(1);
@@ -278,7 +278,7 @@ const Tiny = () => {
   return (
     <div className='tiny-box'>
       <div className='generate'>
-        <input value={ori_link}
+        <input value={stateOriLink}
           onChange={inputChange}
           onKeyDown={handleKeyDown}
           placeholder={queryMsg ? "消息接收成功，复制下面的文字，或者在此输入长链接或短文字" : "请输入长链接"}
