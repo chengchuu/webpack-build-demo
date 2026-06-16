@@ -19,11 +19,12 @@ export function onUrlChange (callback, options = {}) {
     const oldUrl = currentUrl;
     currentUrl = newUrl;
 
-    callback({
+    const info = {
       url: newUrl,
       oldUrl,
       trigger,
-    });
+    };
+    callback(info);
   };
 
   // Window events
@@ -62,11 +63,12 @@ export function onUrlChange (callback, options = {}) {
   listeners.push(() => history.__urlChangeSubscribers__.delete(historySubscriber));
 
   if (fireOnInit) {
-    callback({
+    const info = {
       url: currentUrl,
       oldUrl: currentUrl,
       trigger: "load",
-    });
+    };
+    callback(info);
   }
 
   // unsubscribe
