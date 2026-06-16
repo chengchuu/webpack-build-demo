@@ -23,7 +23,7 @@ const QRCodeFav = "https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png";
 const defaultTinyTitle = "备用链接";
 const Tiny = () => {
   const dispatch = useDispatch();
-  const [generateShortLink] = useGenerateShortLinkMutation();
+  const [ generateShortLink ] = useGenerateShortLinkMutation();
   const {
     oriLink: stateOriLink,
     tinyLink: stateTinyLink,
@@ -68,11 +68,11 @@ const Tiny = () => {
   };
 
   const getTinyLink = (oriLink, baseUrl) => {
-    const oneTime = getQueryParamUltimate("oneTime");
+    const oneTime = getQueryParam("onetime") || getQueryParamUltimate("oneTime");
     return generateShortLink({
       oriLink,
       baseUrl,
-      oneTime: oneTime === "1",
+      oneTime: oneTime === "on" || oneTime === "1",
     }).unwrap().then(link => {
       TinyCon.log("Link", link);
       return link;
@@ -88,7 +88,7 @@ const Tiny = () => {
       TinyCon.log("Link", link);
       loadedLayer && window.layer.confirm(`检测到输入短字符，将跳转至：${link}`, {
         title: "提示",
-        btn: ["确认", "取消"],
+        btn: [ "确认", "取消" ],
       }, function () {
         window.open(link);
       }, function () {
@@ -114,7 +114,7 @@ const Tiny = () => {
       }
       loadedLayer && window.layer.confirm(`检测到输入${isTag ? "标签" : "文字"}，将通过短链传递：${linkForMsg}`, {
         title: "提示",
-        btn: ["确认", "取消"],
+        btn: [ "确认", "取消" ],
       }, function () {
         TinyCon.log("linkForMsg", linkForMsg);
         const enMsg = encodeURIComponent(linkForMsg);
@@ -182,6 +182,7 @@ const Tiny = () => {
       tinyLink = await getTinyLink(realOriLink);
       dispatch(linkActions.setTinyLink(tinyLink));
       dispatch(linkActions.setCopied(false));
+      loadedLayer && window.layer.closeAll("loading");
       msg("成功");
     } catch (err) {
       loadedLayer && window.layer.closeAll("loading");
@@ -189,7 +190,6 @@ const Tiny = () => {
       TinyCon.error(err);
       return;
     }
-    loadedLayer && window.layer.closeAll("loading");
     // QRCode
     if (typeof tinyLink === "string" && tinyLink.includes("http")) {
       dispatch(linkActions.setShowQRCode(true));
@@ -208,7 +208,7 @@ const Tiny = () => {
             area: "全球",
             copied: false,
           });
-          dispatch(linkActions.setBackupTinyLinks([...bakLinks]));
+          dispatch(linkActions.setBackupTinyLinks([ ...bakLinks ]));
           TinyCon.log("backupTinyLinks (next)", bakLinks);
         }
       }).catch(err => {

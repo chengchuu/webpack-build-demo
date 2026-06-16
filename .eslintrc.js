@@ -65,4 +65,12 @@ module.exports = {
       version: "detect",
     },
   },
+  overrides: [
+    {
+      files: ["src/pages/link/**/*.js"],
+      rules: {
+        "array-bracket-spacing": ["error", "always"],
+      },
+    },
+  ],
 };
