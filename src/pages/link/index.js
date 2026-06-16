@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-// eslint-disable-next-line no-unused-vars
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCodeStyling from "qr-code-styling";
 import {
@@ -108,7 +107,6 @@ const Tiny = () => {
   };
 
   const convertToMsg = link => {
-    // eslint-disable-next-line no-unused-vars
     let ok, fail, retLink;
     const status = new Promise((resolve, reject) => {
       ok = resolve;
