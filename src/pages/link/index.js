@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCodeStyling from "qr-code-styling";
 import {
@@ -12,18 +11,19 @@ import {
 import {
   getQueryParamUltimate, isHtmlTag, isValidAnyUrl, isValidENCode,
 } from "./utils";
+import { linkBaseUrl, useGenerateShortLinkMutation } from "./linkApi";
 import createLinkStore from "./store";
 import { linkActions, selectLinkState } from "./linkSlice";
 
 const isDebug = getQueryParam("debug") === "on";
 const TinyCon = genCustomConsole("[Link]", { showDate: true, enabled: isDebug });
-const linkBaseUrl = "//i.mazey.net";
 const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
 const libBaseUrl = "//i.mazey.net/lib";
 const QRCodeFav = "https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png";
 const defaultTinyTitle = "备用链接";
 const Tiny = () => {
   const dispatch = useDispatch();
+  const [generateShortLink] = useGenerateShortLinkMutation();
   const {
     oriLink: stateOriLink,
     tinyLink: stateTinyLink,
@@ -68,22 +68,15 @@ const Tiny = () => {
   };
 
   const getTinyLink = (oriLink, baseUrl) => {
-    const params = {
-      ori_link: oriLink,
-    };
     const oneTime = getQueryParamUltimate("oneTime");
-    if (oneTime === "1") {
-      Object.assign(params, { one_time: true });
-    }
-    if (baseUrl) {
-      Object.assign(params, { base_url: baseUrl });
-    }
-    return axios.post(`${linkBaseUrl}/api/gee/generate-short-link`, params)
-      .then(res => {
-        const link = res.data.tiny_link;
-        TinyCon.log("Link", link);
-        return link;
-      });
+    return generateShortLink({
+      oriLink,
+      baseUrl,
+      oneTime: oneTime === "1",
+    }).unwrap().then(link => {
+      TinyCon.log("Link", link);
+      return link;
+    });
   };
 
   const hashCodeToLink = hashCode => {
@@ -107,10 +100,9 @@ const Tiny = () => {
   };
 
   const convertToMsg = link => {
-    let ok, fail, retLink;
-    const status = new Promise((resolve, reject) => {
+    let ok, retLink;
+    const status = new Promise(resolve => {
       ok = resolve;
-      fail = reject;
     });
     if (!isValidAnyUrl(link)) {
       TinyCon.log("convertToMsg Link", link);
@@ -185,18 +177,19 @@ const Tiny = () => {
     }
     loadedLayer && window.layer.load(1);
     TinyCon.log("Ultimate", realOriLink);
-    const tinyLink = await getTinyLink(realOriLink).then(link => {
-      loadedLayer && window.layer.closeAll("loading");
-      const getTinyLink = link;
-      dispatch(linkActions.setTinyLink(getTinyLink));
+    let tinyLink;
+    try {
+      tinyLink = await getTinyLink(realOriLink);
+      dispatch(linkActions.setTinyLink(tinyLink));
       dispatch(linkActions.setCopied(false));
       msg("成功");
-      return getTinyLink;
-    }).catch(err => {
+    } catch (err) {
       loadedLayer && window.layer.closeAll("loading");
       msg("网络错误");
-      TinyCon.error(err.message);
-    });
+      TinyCon.error(err);
+      return;
+    }
+    loadedLayer && window.layer.closeAll("loading");
     // QRCode
     if (typeof tinyLink === "string" && tinyLink.includes("http")) {
       dispatch(linkActions.setShowQRCode(true));
@@ -218,6 +211,8 @@ const Tiny = () => {
           dispatch(linkActions.setBackupTinyLinks([...bakLinks]));
           TinyCon.log("backupTinyLinks (next)", bakLinks);
         }
+      }).catch(err => {
+        TinyCon.error(err);
       });
     }
   };
