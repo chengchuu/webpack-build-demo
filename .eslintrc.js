@@ -3,13 +3,18 @@ module.exports = {
   parserOptions: {
     sourceType: "module", // ECMAScript 模块
     ecmaVersion: 9, // JavaScript 版本，https://eslint.org/docs/latest/use/configure/language-options
-    parser: "babel-eslint", // 解析器
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   env: {
     browser: true, // 浏览器启用
     node: true, // node 启用
     es6: true, // es6 启用
   },
+  plugins: [
+    "react",
+  ],
   extends: [
     "standard", // js标准规则
     // https://standardjs.com/rules-zhcn.html#javascript-standard-style
@@ -50,7 +55,14 @@ module.exports = {
     ],
     // 要求使用 let 或 const 而不是 var
     "no-var": ["error"],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
     // allow debugger during development
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },
   },
 };

@@ -1,7 +1,5 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
-// eslint-disable-next-line no-unused-vars
 import { Provider, useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 // eslint-disable-next-line no-unused-vars
@@ -25,7 +23,6 @@ const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
 const libBaseUrl = "//i.mazey.net/lib";
 const QRCodeFav = "https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png";
 const defaultTinyTitle = "备用链接";
-// eslint-disable-next-line no-unused-vars
 const Tiny = () => {
   const dispatch = useDispatch();
   const {
