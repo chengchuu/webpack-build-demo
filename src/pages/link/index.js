@@ -10,6 +10,7 @@ import {
 } from "mazey";
 import {
   getQueryParamUltimate, isHtmlTag, isValidAnyUrl, isValidENCode,
+  getStringLength,
 } from "./utils";
 import { linkBaseUrl, useGenerateShortLinkMutation } from "./linkApi";
 import createLinkStore from "./store";
@@ -149,8 +150,9 @@ const Tiny = () => {
   };
 
   const fetchShortLink = async () => {
-    let realOriLink = "";
     TinyCon.log(`Ori Link ${stateOriLink}`);
+    let realOriLink = "";
+    let tinyLink;
     const trimOriLink = mTrim(stateOriLink);
     const suppleHttp = `http://${trimOriLink}`;
     if (trimOriLink === "") {
@@ -168,16 +170,19 @@ const Tiny = () => {
       msg("请输入正确的链接");
       return;
     }
-    dispatch(linkActions.setOriLink(realOriLink));
-    dispatch(linkActions.setBackupTinyLinks([]));
-    dispatch(linkActions.setShowQRCode(false));
     if (typeof realOriLink === "string" && realOriLink.includes(" ")) {
       TinyCon.log("Link Before Trim", realOriLink);
       realOriLink = mTrim(realOriLink);
     }
-    loadedLayer && window.layer.load(1);
+    if (getStringLength(realOriLink) > 500) {
+      msg("链接过长，请输入小于 500 字符的链接");
+      return;
+    }
     TinyCon.log("Ultimate", realOriLink);
-    let tinyLink;
+    dispatch(linkActions.setOriLink(realOriLink));
+    dispatch(linkActions.setBackupTinyLinks([]));
+    dispatch(linkActions.setShowQRCode(false));
+    loadedLayer && window.layer.load(1);
     try {
       tinyLink = await getTinyLink(realOriLink);
       dispatch(linkActions.setTinyLink(tinyLink));

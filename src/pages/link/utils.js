@@ -18,3 +18,7 @@ export const isValidAnyUrl = url => {
 export const isValidENCode = str => {
   return /^[a-zA-Z]+$/g.test(str);
 };
+
+export const getStringLength = str => {
+  return Array.from(str || "").length;
+};
