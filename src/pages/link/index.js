@@ -16,13 +16,13 @@ import { linkBaseUrl, useGenerateShortLinkMutation } from "./linkApi";
 import createLinkStore from "./store";
 import { linkActions, selectLinkState } from "./linkSlice";
 
-const isDebug = getQueryParam("debug") === "on";
-const TinyCon = genCustomConsole("[Link]", { showDate: true, enabled: isDebug });
-const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
-const libBaseUrl = "//i.mazey.net/lib";
-const QRCodeFav = "https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png";
-const defaultTinyTitle = "备用链接";
 const Tiny = () => {
+  const isDebug = getQueryParam("debug") === "on";
+  const TinyCon = genCustomConsole("[Link]", { showDate: true, enabled: isDebug });
+  const foreignBaseUrl = window.TINY_FOREIGN_BASE_URL;
+  const libBaseUrl = "//i.mazey.net/lib";
+  const QRCodeFav = "https://i.mazey.net/icon/fav/logo-dark-circle-32x32.png";
+  const defaultTinyTitle = "备用链接";
   const dispatch = useDispatch();
   const [ generateShortLink ] = useGenerateShortLinkMutation();
   const {
