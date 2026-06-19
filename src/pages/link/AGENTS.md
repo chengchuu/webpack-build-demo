@@ -21,10 +21,19 @@ This directory defines the standalone "link" page for generating short links, ba
   - Exposes `window.TINY_INIT = TinyInit` for external consumers.
 - `store.js`
   - Creates a page-local Redux Toolkit store.
+  - Registers both the local `link` slice reducer and the local RTK Query `linkApi` reducer.
+  - Adds `linkApi.middleware`.
   - `TinyInit` creates a fresh store per mounted root and passes it through `react-redux`'s `Provider`.
 - `linkSlice.js`
   - Defines the `link` Redux slice for page data.
   - Owns original link input, generated short link, query message, copy state, QR visibility, Layer loaded state, and backup short links.
+- `linkApi.js`
+  - Defines a page-local RTK Query API slice using `createApi` + `fetchBaseQuery`.
+  - Exports `linkBaseUrl` and `useGenerateShortLinkMutation`.
+  - Builds the `/api/gee/generate-short-link` request body with `ori_link`, optional `one_time`, and optional `base_url`.
+- `utils.js`
+  - Provides `getQueryParamUltimate`, `isHtmlTag`, `isValidAnyUrl`, `isValidENCode`, and `getStringLength`.
+  - `getStringLength` uses `Array.from(str || "").length` for Unicode-safer input length checks.
 - `index.html`
   - Supplies the mount target and page-local global config.
   - `window.TINY_FOREIGN_BASE_URL` enables optional backup short-link generation.
@@ -51,22 +60,26 @@ This directory defines the standalone "link" page for generating short links, ba
    - `showQRCode`: controls QR code rendering.
    - `loadedLayer`: tracks whether the external `layer` UI library has loaded.
    - `backupTinyLinks`: optional backup short links.
-5. On mount, `Tiny` writes `mazey_loaded_tiny` to `localStorage`, loads jQuery if needed, then loads `layer.js`. If `?msg=` exists, it displays that message as the current result.
-6. User input flows through `inputChange` into `ori_link`; pressing Enter or clicking `生成` calls `fetchShortLink`.
-7. `fetchShortLink` validates and normalizes input:
+5. `Tiny` uses RTK Query's `useGenerateShortLinkMutation()` for short-link requests, but still copies successful results into `linkSlice` state via `setTinyLink` / `setBackupTinyLinks`.
+6. On mount, `Tiny` writes `mazey_loaded_tiny` to `localStorage`, loads jQuery if needed, then loads `layer.js`. If `?msg=` exists, it dispatches both `setTinyLink(tempQueryMsg)` and `setQueryMsg(tempQueryMsg)`.
+7. User input flows through `inputChange` into `oriLink`; pressing Enter or clicking `生成` calls `fetchShortLink`.
+8. `fetchShortLink` validates and normalizes input:
+   - empty input shows `不能为空`;
    - valid URLs pass through as-is;
    - short alphabetic codes up to 4 chars trigger `hashCodeToLink` and open `/t/{code}`;
    - domain-like input gets an `http://` prefix if valid;
    - plain text or HTML tags may be converted into a `?msg=` sharing URL after confirmation.
-8. `getTinyLink` posts to `//i.mazey.net/api/gee/generate-short-link` with `ori_link`, optional `one_time`, and optional `base_url`.
-9. Successful primary responses update `tiny_link`, reset copy state, show a success message, and generate a QR code with `qr-code-styling`.
-10. If `window.TINY_FOREIGN_BASE_URL` is present, `fetchShortLink` requests a backup short link and appends it to `backupTinyLinks`.
-11. Copy buttons use `react-copy-to-clipboard`; callbacks update `copied` or the matching backup link's `copied` field.
+9. After normalization, `fetchShortLink` trims spaces again if present and rejects input when `getStringLength(realOriLink) > 500`, showing `链接过长，请输入小于 500 字符的链接`.
+10. `getTinyLink` triggers the RTK Query mutation to post to `//i.mazey.net/api/gee/generate-short-link` with `ori_link`, optional `one_time` (from `onetime` or `oneTime` query params), and optional `base_url`.
+11. Successful primary responses update `tinyLink`, reset copy state, show a success message, and generate a QR code with `qr-code-styling`.
+12. Before rendering a new QR code, `convertUrlStringToQRCode` calls `ref.current.replaceChildren()` so repeated generations do not stack duplicate QR DOM nodes.
+13. If `window.TINY_FOREIGN_BASE_URL` is present, `fetchShortLink` requests a backup short link and replaces `backupTinyLinks` with a single backup entry labeled `备用链接`.
+14. Copy buttons use `react-copy-to-clipboard`; callbacks update `copied` or the matching backup link's `copied` field.
 
 ## External Dependencies and Globals
 
 - React and React DOM power the UI; `createRoot` means this page already uses the React 18+ root API.
-- `axios` posts to the short-link API.
+- RTK Query (`@reduxjs/toolkit/query/react`) handles the short-link API requests.
 - `react-copy-to-clipboard` handles copy actions.
 - `qr-code-styling` renders the QR code into the `.qr-code` ref.
 - `mazey` provides utility helpers for query params, URL validation, debug logging, script loading, style injection, and browser detection.
@@ -82,5 +95,5 @@ This directory defines the standalone "link" page for generating short links, ba
   - `react`: `19.2.7`
   - `@reduxjs/toolkit`: `2.12.0`
 - Upgrade `react` and `react-dom` together to matching versions.
-- Redux Toolkit and React Redux are used locally by this page. Keep `store.js` and `linkSlice.js` scoped to this directory unless the state needs to be shared across entries.
+- Redux Toolkit, RTK Query, and React Redux are used locally by this page. Keep `store.js`, `linkSlice.js`, and `linkApi.js` scoped to this directory unless the state needs to be shared across entries.
 - If React 19 is adopted, test this page around `createRoot`, clipboard behavior, remote script loading, and QR-code rendering.
