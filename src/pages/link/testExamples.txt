@@ -1,0 +1,13 @@
+# Test Examples:
+
+http://localhost:9202/tiny.html
+https://www.example.com/tiny
+ https://www.example.com/tiny
+www.example.com/tiny
+ftp://main/sub?id=2333
+sheeee://hahah/sub?id=num
+短消息
+AAa
+b
+<a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
+http://www.example.com/tiny/index.html?msg=<a href="https://www.example.com/tiny" target="_blank">xxx</a><br/>
